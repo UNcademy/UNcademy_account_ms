@@ -1,7 +1,7 @@
 version: '3'
 services:
-  cyberplace_account_ms:
-    image: UNcademy_account_ms
+  uncademy_account_ms:
+    image: uncademy_account_ms
     build: .
     volumes:
       - ".:/UNcademy_account_ms"
