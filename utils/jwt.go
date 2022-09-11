@@ -13,6 +13,7 @@ import (
 type MetaToken struct {
 	UserName      string
 	Email         string
+	Role          string
 	ExpiredAt     time.Time
 	Authorization bool
 }
@@ -63,7 +64,7 @@ func VerifyTokenHeader(ctx *gin.Context, SecretPublicKeyEnvName string) (*jwt.To
 	return token, nil
 }
 
-func ExtractClaimValueFromToken(ctx *gin.Context, claim string) string{
+func ExtractClaimValueFromToken(ctx *gin.Context, claim string) string {
 	claims, _ := ctx.Get("user")
 	values := claims.(jwt.MapClaims)
 	username := values[claim].(string)
@@ -85,7 +86,6 @@ func VerifyToken(accessToken, SecretPublicKeyEnvName string) (*jwt.Token, error)
 
 	return token, nil
 }
-
 
 func DecodeToken(accessToken *jwt.Token) AccessToken {
 	var token AccessToken
