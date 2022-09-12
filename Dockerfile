@@ -1,6 +1,7 @@
 FROM golang:alpine
 
 RUN mkdir /UNcademy_account_ms
+RUN go install github.com/beego/bee/v2@latest
 
 WORKDIR /UNcademy_account_ms
 
@@ -10,8 +11,6 @@ ADD go.sum .
 RUN go mod download
 ADD . .
 
-RUN go get github.com/githubnemo/CompileDaemon
+EXPOSE 8001
 
-EXPOSE 8000
-
-ENTRYPOINT CompileDaemon --build="go build main.go" --command=./main
+CMD ["bee", "run"]
