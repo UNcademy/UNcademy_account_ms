@@ -28,7 +28,7 @@ func (r *repository) ResetRepository(input *model.User, newPassword string) (*mo
 
 	checkUserAccount := db.Debug().Select("*").Where("user_name = ?", input.UserName).Find(&users)
 
-	if checkUserAccount.Error != nil {
+	if checkUserAccount.RowsAffected == 0 {
 		errorCode <- "USER_NOT_FOUND_404"
 		return &users, <-errorCode
 	}

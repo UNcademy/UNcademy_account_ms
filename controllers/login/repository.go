@@ -31,7 +31,7 @@ func (r *repository) LoginRepository(input *model.User) (*model.User, string) {
 	//Miro si el nombre de usuario existe en la base de datos y guarda en users (estructura temporal) la informacion que esta guardada de ese usuario
 	checkUserAccount := db.Debug().Select("*").Where("user_name = ?", input.UserName).Find(&users)
 
-	if checkUserAccount.Error != nil {
+	if checkUserAccount.RowsAffected == 0 {
 		errorCode <- "LOGIN_NOT_FOUND_404"
 		return &users, <-errorCode
 	}
