@@ -2,6 +2,7 @@ package register
 
 import (
 	model "UNcademy_account_ms/models"
+
 	"gorm.io/gorm"
 )
 
@@ -53,6 +54,7 @@ func (r *repository) RegisterRepository(input *model.User) (*model.User, string)
 	users.MotherDocument = input.MotherDocument
 	users.FatherFullName = input.FatherFullName
 	users.FatherDocument = input.FatherDocument
+	users.Program = input.Program
 
 	//Funciones de ORM
 	addNewUser := db.Debug().Create(&users)

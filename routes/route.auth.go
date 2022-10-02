@@ -10,11 +10,13 @@ import (
 	handlerGetUsername "UNcademy_account_ms/handlers/username"
 	validationHandler "UNcademy_account_ms/handlers/validation"
 	"UNcademy_account_ms/middlewares"
+
 	"github.com/gin-gonic/gin"
+	"github.com/streadway/amqp"
 	"gorm.io/gorm"
 )
 
-func InitAuthRoutes(db *gorm.DB, route *gin.Engine) {
+func InitAuthRoutes(db *gorm.DB, route *gin.Engine, rabbitmq *amqp.Channel) {
 
 	loginRepository := login2.NewRepositoryLogin(db)
 	loginService := login2.NewServiceLogin(loginRepository)
@@ -22,7 +24,7 @@ func InitAuthRoutes(db *gorm.DB, route *gin.Engine) {
 
 	registerRepository := register2.NewRepositoryRegister(db)
 	registerService := register2.NewServiceRegister(registerRepository)
-	registerHandler := handlerRegister.NewHandlerRegister(registerService)
+	registerHandler := handlerRegister.NewHandlerRegister(registerService, rabbitmq)
 
 	resetRepository := reset2.NewRepositoryReset(db)
 	resetService := reset2.NewServiceReset(resetRepository)

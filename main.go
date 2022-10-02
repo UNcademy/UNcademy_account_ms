@@ -3,6 +3,7 @@ package main
 import (
 	"UNcademy_account_ms/configs"
 	route "UNcademy_account_ms/routes"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
@@ -22,10 +23,11 @@ func SetupRouter() *gin.Engine {
 	}
 
 	db := configs.Connection()
+	rabbitmq := configs.RabbitmqConnection()
 
 	router := gin.Default()
 
-	route.InitAuthRoutes(db, router)
+	route.InitAuthRoutes(db, router, rabbitmq)
 
 	return router
 }

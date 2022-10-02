@@ -25,4 +25,5 @@ type InputRegister struct {
 	MotherDocument int        `json:"mother_document" validate:"numeric"`
 	FatherFullName string     `json:"father_full_name" validate:"lowercase"`
 	FatherDocument int        `json:"father_document" validate:"numeric"`
+	Program        string     `json:"program" validate:"required, lowercase"`
 }

@@ -39,6 +39,7 @@ func (s *service) RegisterService(input *InputRegister) (*model.User, string) {
 		MotherDocument: input.MotherDocument,
 		FatherFullName: input.FatherFullName,
 		FatherDocument: input.FatherDocument,
+		Program:        input.Program,
 	}
 
 	resultRegister, errRegister := s.repository.RegisterRepository(&users)

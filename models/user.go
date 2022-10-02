@@ -2,8 +2,9 @@ package models
 
 import (
 	util "UNcademy_account_ms/utils"
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Role string
@@ -32,6 +33,7 @@ type User struct {
 	MotherDocument int    `gorm:"type:int"`
 	FatherFullName string `gorm:"type:varchar(255)"`
 	FatherDocument int    `gorm:"type:int"`
+	Program        string `gorm:"type:varchar(255)"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }
