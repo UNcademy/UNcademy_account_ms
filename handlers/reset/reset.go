@@ -3,9 +3,12 @@ package reset
 import (
 	reset2 "UNcademy_account_ms/controllers/reset"
 	util "UNcademy_account_ms/utils"
+	"fmt"
+	"log"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"net/http"
 )
 
 type handler struct {
@@ -34,7 +37,22 @@ func (h *handler) ResetHandler(ctx *gin.Context) {
 		}
 
 		result := util.DecodeToken(resultToken)
-
+		// ------------- LDAP ----------------------
+		l, connectionErr := util.Connect()
+		if connectionErr != nil {
+			util.APIResponse(ctx, "[LDAP] Connection failed", http.StatusServiceUnavailable, http.MethodPost,
+				nil)
+			log.Fatal(connectionErr)
+		}
+		defer l.Close()
+		// PWD modification
+		errLDAP := util.ResetPwd(l, result.Claims.UserName, input.Password, input.NewPassword)
+		if errLDAP != nil {
+			util.APIResponse(ctx, fmt.Sprintf("[LDAP] Error reseting user's pwd:%s", errLDAP),
+				http.StatusServiceUnavailable, http.MethodPost, nil)
+			return
+		}
+		// -----------------------------------------
 		errReset := h.service.ResetService(&input, result.Claims.UserName)
 
 		switch errReset {

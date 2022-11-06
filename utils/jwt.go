@@ -2,16 +2,18 @@ package utils
 
 import (
 	"encoding/json"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 type MetaToken struct {
 	UserName      string
+	FullName      string
 	Email         string
 	Role          string
 	ExpiredAt     time.Time
