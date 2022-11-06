@@ -61,7 +61,7 @@ func (h *handler) LoginHandler(ctx *gin.Context) {
 			util.APIResponse(ctx, "Username or password is wrong", http.StatusForbidden, http.MethodPost, nil)
 
 		default:
-			accessTokenData := map[string]interface{}{"username": resultLogin.UserName, "email": resultLogin.Email, "usertype": resultLogin.UserType}
+			accessTokenData := map[string]interface{}{"username": resultLogin.UserName, "fullname": resultLogin.FullName, "email": resultLogin.Email, "usertype": resultLogin.UserType}
 			accessToken, errToken := util.Sign(accessTokenData, "JWT_SECRET", 300)
 
 			if errToken != nil {
