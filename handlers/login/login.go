@@ -3,9 +3,12 @@ package login
 import (
 	login2 "UNcademy_account_ms/controllers/login"
 	util "UNcademy_account_ms/utils"
+	"fmt"
+	"log"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"net/http"
 )
 
 type handler struct {
@@ -28,7 +31,22 @@ func (h *handler) LoginHandler(ctx *gin.Context) {
 		defer logrus.Error(err.Error())
 		util.APIResponse(ctx, "Parsing json data failed", http.StatusBadRequest, http.MethodPost, nil)
 	} else {
+		// --------- LDAP -----------------------
+		l, connectionErr := util.Connect()
+		if connectionErr != nil {
+			util.APIResponse(ctx, "LDAP connection failed", http.StatusServiceUnavailable, http.MethodPost, nil)
+			log.Fatal(connectionErr)
+		}
+		defer l.Close()
 
+		// Normal Bind and Search
+		_, bindingErr := util.BindAndSearch(l, input.UserName, input.Password)
+		if bindingErr != nil {
+			util.APIResponse(ctx, fmt.Sprintf("[LDAP] Error authenticating user:%s", bindingErr),
+				http.StatusNotFound, http.MethodPost, nil)
+			return
+		}
+		// ------------------------------------------
 		resultLogin, errLogin := h.service.LoginService(&input)
 
 		switch errLogin {
