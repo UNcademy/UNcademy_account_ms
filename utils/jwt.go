@@ -12,6 +12,7 @@ import (
 
 type MetaToken struct {
 	UserName      string
+	FullName      string
 	Email         string
 	Role          string
 	ExpiredAt     time.Time
